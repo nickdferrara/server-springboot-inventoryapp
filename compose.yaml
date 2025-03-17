@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=inventoryapp'
+      - 'POSTGRES_PASSWORD=admin'
+      - 'POSTGRES_USER=admin'
+    ports:
+      - '5432:5432'
+    volumes:
+      - 'postgres_data:/var/lib/postgresql/data'
+    restart: unless-stopped
+
+  app:
+    depends_on:
+      - postgres
+    build: .
+    restart: on-failure
+    ports:
+      - '8080:8080'
+
+volumes:
+  postgres_data:
